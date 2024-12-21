@@ -15,22 +15,35 @@ def run_parser(input_file, output_dir):
     """
     search_file = input_file+"_search.tsv"
     print(search_file, output_dir)
+        
+    full_path_to_search_file = os.path.join(output_dir, search_file)
+    print(f"Full path to search file: {full_path_to_search_file}")
+
     cmd = ['python', './results_parser.py', output_dir, search_file]
     print(f'STEP 2: RUNNING PARSER: {" ".join(cmd)}')
     p = Popen(cmd, stdin=PIPE,stdout=PIPE, stderr=PIPE)
     out, err = p.communicate()
+    
+    if p.returncode != 0:
+        print("Error running command:", ' '.join(cmd))
+        print("stdout:", out.decode())
+        print("stderr:", err.decode())
     print(out.decode("utf-8"))
+
 
 def run_merizo_search(input_file, id):
     """
     Runs the merizo domain predictor to produce domains
     """
+    output_directory = '/home/almalinux/test/result'
+    database_directory = '/home/almalinux/test/cath_foldclassdb/cath-4.3-foldclassdb'
+    merizo_executable = '/home/almalinux/merizo_search/merizo_search/merizo.py'
     cmd = ['python3',
            '/home/almalinux/merizo_search/merizo_search/merizo.py',
            'easy-search',
-           input_file,
-           '/home/almalinux/merizo_search/examples/database/cath-4.3-foldclassdb',
-           id,
+           os.path.abspath(input_file),
+           '/home/almalinux/test/cath_foldclassdb/cath-4.3-foldclassdb',
+           os.path.join(output_directory, id),
            'tmp',
            '--iterate',
            '--output_headers',
@@ -42,7 +55,14 @@ def run_merizo_search(input_file, id):
     print(f'STEP 1: RUNNING MERIZO: {" ".join(cmd)}')
     p = Popen(cmd, stdin=PIPE,stdout=PIPE, stderr=PIPE)
     out, err = p.communicate()
-    
+    print("Merizo stdout:", out.decode())
+    print("Merizo stderr:", err.decode())
+    if p.returncode != 0:
+        print("Merizo search failed")
+    else:
+        print("Merizo search completed successfully")
+    print("Listing files in output directory:")
+    print(os.listdir('/home/almalinux/test/result/'))
 def read_dir(input_dir):
     """
     Function reads a fasta formatted file of protein sequences

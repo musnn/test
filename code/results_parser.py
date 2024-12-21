@@ -1,6 +1,7 @@
 import sys
 import csv
 import json
+import os
 from collections import defaultdict
 import statistics
 # fhOut = open(sys.argv[1]."summmary", "w")
@@ -9,7 +10,11 @@ import statistics
 cath_ids = defaultdict(int)
 plDDT_values = []
 id = sys.argv[2].rstrip("_search.tsv")
-with open(sys.argv[1]+sys.argv[2], "r") as fhIn:
+
+file_path = os.path.join(sys.argv[1], sys.argv[2])
+print(f"Trying to open file at: {file_path}")
+
+with open(file_path, "r") as fhIn:
     next(fhIn)
     msreader = csv.reader(fhIn, delimiter='\t',) 
     tot_entries = 0

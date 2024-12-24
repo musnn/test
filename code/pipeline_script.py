@@ -7,14 +7,13 @@ import multiprocessing
 from collections import defaultdict
 import statistics
 
-
 def run_parser(output_dir, input_file):
     """
     Run the results_parser.py over the output file to produce the final summary
     """
     search_file = os.path.join(output_dir, input_file + "_search.tsv")
     print(f'Running parser on {search_file}')
-    cmd = ['python', 'results_parser.py', output_dir, search_file]
+    cmd = ['python', 'results_parser.py', search_file]
     print(f'STEP 2: RUNNING PARSER: {" ".join(cmd)}')
     p = Popen(cmd, stdout=PIPE, stderr=PIPE)
     out, err = p.communicate()
@@ -60,39 +59,17 @@ def read_dir(input_dir):
         analysis_files.append([file, id])
     return analysis_files
 
-def aggregate_results(output_dir):
-    cath_ids = defaultdict(int)
-    plDDT_values = []
-
-    for parsed_file in glob.glob(os.path.join(output_dir, "*.parsed")):
-        with open(parsed_file, 'r') as file:
-            header = next(file).strip().split(': ')[1]
-            mean_plddt = float(header)
-            plDDT_values.append(mean_plddt)
-            for line in file:
-                cath_id, count = line.strip().split(',')
-                cath_ids[cath_id] += int(count)
-
-    with open(os.path.join(output_dir, "summary.csv"), 'w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow(['cath_id', 'count'])
-        for cath_id, count in cath_ids.items():
-            writer.writerow([cath_id, count])
-
-    if plDDT_values:
-        mean_plddt = statistics.mean(plDDT_values)
-        std_plddt = statistics.stdev(plDDT_values) if len(plDDT_values) > 1 else 0
-        with open(os.path.join(output_dir, "plDDT_means.csv"), 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(['organism', 'mean_plddt', 'plddt_std'])
-            writer.writerow(['All', f"{mean_plddt:.3f}", f"{std_plddt:.3f}"])
-
 def pipeline(input_dir, output_dir):
-    pdbfiles = read_dir(input_dir)
-    with multiprocessing.Pool(1) as pool:
-        pool.starmap(run_merizo_search, [(file, output_dir, id) for file, id in pdbfiles])
-        pool.starmap(run_parser, [(output_dir, id) for _, id in pdbfiles])
-    aggregate_results(output_dir)
+    organisms = ['human-pdb', 'ecoli-pdb']
+    for organism in organisms:
+        org_input_dir = os.path.join(input_dir, organism)
+        org_output_dir = os.path.join(output_dir, organism.replace('-pdb', ''))
+        os.makedirs(org_output_dir, exist_ok=True)
+        
+        pdbfiles = read_dir(org_input_dir)
+        with multiprocessing.Pool(1) as pool:
+            pool.starmap(run_merizo_search, [(file, org_output_dir, id) for file, id in pdbfiles])
+            pool.starmap(run_parser, [(org_output_dir, id) for _, id in pdbfiles])
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:

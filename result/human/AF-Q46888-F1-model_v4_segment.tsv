@@ -1,0 +1,2 @@
+filename	nres	nres_dom	nres_ndr	ndom	pIoU	runtime	result
+AF-Q46888-F1-model_v4	302	302	0	2	1.0000	3.8862	1-170,171-302

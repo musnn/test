@@ -1,0 +1,2 @@
+query	chopping	dom_conf	dom_plddt	emb_rank	target	emb_score	q_len	t_len	ali_len	seq_id	q_tm	t_tm	max_tm	rmsd	metadata
+AF-Q46857-F1-model_v4_merizo_01	4-190	0.8718	98.4544	0	5dbtI00	0.8977	187	201	164	0.0910	0.6725	0.6337	0.6725	3.40	{"cath": "3.20.20.70", "res": "2.810"}

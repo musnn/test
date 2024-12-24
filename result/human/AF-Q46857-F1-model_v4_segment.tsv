@@ -1,0 +1,2 @@
+filename	nres	nres_dom	nres_ndr	ndom	pIoU	runtime	result
+AF-Q46857-F1-model_v4	275	264	11	2	0.8910	3.9351	4-190,191-267

@@ -1,0 +1,2 @@
+filename	nres	nres_dom	nres_ndr	ndom	pIoU	runtime	result
+AF-P50456-F1-model_v4	406	399	7	3	0.8894	5.5362	8-84,85-209_379-406,210-378

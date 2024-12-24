@@ -1,0 +1,2 @@
+filename	nres	nres_dom	nres_ndr	ndom	pIoU	runtime	result
+AF-P76372-F1-model_v4	326	261	65	2	0.7971	4.1704	53-177_272-313,178-271

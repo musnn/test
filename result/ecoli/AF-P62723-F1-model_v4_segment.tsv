@@ -1,0 +1,2 @@
+filename	nres	nres_dom	nres_ndr	ndom	pIoU	runtime	result
+AF-P62723-F1-model_v4	349	334	15	2	0.8085	3.9237	16-94_281-312,95-280_313-349

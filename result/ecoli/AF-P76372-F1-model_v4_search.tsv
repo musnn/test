@@ -1,0 +1,2 @@
+query	chopping	dom_conf	dom_plddt	emb_rank	target	emb_score	q_len	t_len	ali_len	seq_id	q_tm	t_tm	max_tm	rmsd	metadata
+AF-P76372-F1-model_v4_merizo_01	53-177_272-313	0.9438	94.2622	0	3b8pC00	0.9488	167	184	145	0.7030	0.8353	0.7604	0.8353	1.04	{"cath": "3.30.1890.10", "res": "3.100"}

@@ -1,0 +1,2 @@
+filename	nres	nres_dom	nres_ndr	ndom	pIoU	runtime	result
+AF-Q2MB16-F1-model_v4	79	68	11	1	0.4755	0.5215	1-68

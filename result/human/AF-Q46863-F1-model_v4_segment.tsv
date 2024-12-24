@@ -1,0 +1,2 @@
+filename	nres	nres_dom	nres_ndr	ndom	pIoU	runtime	result
+AF-Q46863-F1-model_v4	535	504	31	4	0.8840	10.2195	32-196,197-289_505-535,290-437,438-504

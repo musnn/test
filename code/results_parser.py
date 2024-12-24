@@ -16,14 +16,22 @@ def parse_results(search_file):
             next(file)  # Skip header
             reader = csv.reader(file, delimiter='\t')
             for row in reader:
-                plDDT_values.append(float(row[3]))
+                plDDT_value = float(row[3])
+                plDDT_values.append(plDDT_value)
                 meta = json.loads(row[15])
                 cath_ids[meta["cath"]] += 1
         
-        with open(output_path_parsed, "w", newline='', encoding="utf-8") as file:
-            file.write(f"# mean plddt: {statistics.mean(plDDT_values) if plDDT_values else 0}\n")
-            for cath_id, count in cath_ids.items():
-                file.write(f"{cath_id},{count}\n")
+        mean_plddt = statistics.mean(plDDT_values) if plDDT_values else 0
+
+        # Only write parsed file if there is meaningful data
+        if mean_plddt > 0 and cath_ids:  # Checks if mean plDDT is greater than zero and cath_ids is not empty
+            with open(output_path_parsed, "w", newline='', encoding="utf-8") as file:
+                file.write(f"# mean plddt: {mean_plddt}\n")
+                for cath_id, count in cath_ids.items():
+                    file.write(f"{cath_id},{count}\n")
+        else:
+            print(f"No meaningful data found in {search_file}. No parsed file created.")
+
     except FileNotFoundError:
         print(f"File not found: {search_file}")
 
